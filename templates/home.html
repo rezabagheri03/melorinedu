@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}خانه - MelorinEdu{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6 text-center text-lg-end">
+                <h1 class="display-3 fw-bold neon-text mb-4">
+                    به پلتفرم آموزشی <br>
+                    <span class="neon-glow">ملورین</span> خوش آمدید
+                </h1>
+                <p class="lead mb-4">
+                    یادگیری تکنولوژی‌های روز دنیا با بهترین اساتید و جدیدترین محتوای آموزشی
+                </p>
+                <div class="d-flex gap-3 justify-content-center justify-content-lg-end">
+                    <a href="{% url 'register' %}" class="btn btn-neon btn-lg">
+                        <i class="fas fa-rocket"></i> شروع یادگیری
+                    </a>
+                    <a href="{% url 'about' %}" class="btn btn-outline-neon btn-lg">
+                        <i class="fas fa-info-circle"></i> بیشتر بدانید
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center mt-5 mt-lg-0">
+                <div class="hero-illustration">
+                    <i class="fas fa-laptop-code fa-10x neon-text animated-float"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="stats-section py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card text-center">
+                    <div class="stat-icon">
+                        <i class="fas fa-users fa-3x"></i>
+                    </div>
+                    <h3 class="neon-text display-4 fw-bold">{{ total_students|default:"0" }}</h3>
+                    <p>دانشجوی فعال</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card text-center">
+                    <div class="stat-icon">
+                        <i class="fas fa-book fa-3x"></i>
+                    </div>
+                    <h3 class="neon-text display-4 fw-bold">50+</h3>
+                    <p>دوره آموزشی</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card text-center">
+                    <div class="stat-icon">
+                        <i class="fas fa-chalkboard-teacher fa-3x"></i>
+                    </div>
+                    <h3 class="neon-text display-4 fw-bold">20+</h3>
+                    <p>مدرس حرفه‌ای</p>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="stat-card text-center">
+                    <div class="stat-icon">
+                        <i class="fas fa-certificate fa-3x"></i>
+                    </div>
+                    <h3 class="neon-text display-4 fw-bold">1000+</h3>
+                    <p>گواهینامه صادر شده</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-4 neon-text mb-3">ویژگی‌های پلتفرم</h2>
+            <p class="lead">چرا MelorinEdu بهترین انتخاب برای یادگیری است؟</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card h-100">
+                    <div class="feature-icon">
+                        <i class="fas fa-video fa-3x"></i>
+                    </div>
+                    <h4 class="neon-text">ویدیوهای با کیفیت</h4>
+                    <p>محتوای آموزشی با بالاترین کیفیت تصویر و صدا، قابل مشاهده در هر زمان و مکان</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card h-100">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset fa-3x"></i>
+                    </div>
+                    <h4 class="neon-text">پشتیبانی 24/7</h4>
+                    <p>تیم پشتیبانی ما همیشه آماده پاسخگویی به سوالات شماست</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card h-100">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy fa-3x"></i>
+                    </div>
+                    <h4 class="neon-text">گواهینامه معتبر</h4>
+                    <p>دریافت گواهینامه معتبر پس از اتمام هر دوره آموزشی</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card h-100">
+                    <div class="feature-icon">
+                        <i class="fas fa-project-diagram fa-3x"></i>
+                    </div>
+                    <h4 class="neon-text">پروژه‌های عملی</h4>
+                    <p>یادگیری از طریق انجام پروژه‌های واقعی و کاربردی</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card h-100">
+                    <div class="feature-icon">
+                        <i class="fas fa-users-cog fa-3x"></i>
+                    </div>
+                    <h4 class="neon-text">جامعه فعال</h4>
+                    <p>عضویت در جامعه بزرگ دانشجویان و تبادل تجربیات</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="feature-card h-100">
+                    <div class="feature-icon">
+                        <i class="fas fa-sync-alt fa-3x"></i>
+                    </div>
+                    <h4 class="neon-text">محتوای به‌روز</h4>
+                    <p>بروزرسانی مداوم محتوا با جدیدترین تکنولوژی‌ها</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section py-5">
+    <div class="container">
+        <div class="cta-box text-center">
+            <h2 class="display-4 neon-text mb-4">آماده شروع یادگیری هستید؟</h2>
+            <p class="lead mb-4">همین الان ثبت نام کنید و به جمع هزاران دانشجوی موفق ما بپیوندید</p>
+            <a href="{% url 'register' %}" class="btn btn-neon btn-lg">
+                <i class="fas fa-user-plus"></i> ثبت نام رایگان
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
