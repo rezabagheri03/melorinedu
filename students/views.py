@@ -1,47 +1,47 @@
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.db.models import Q
 from .models import Student
 from .forms import StudentRegistrationForm, ContactForm
 
 def home(request):
     """Home page view"""
-    total_students = Student.objects.filter(is_active=True).count()
-    total_courses = Student.objects.exclude(courses_completed='').count()
+    students_count = Student.objects.filter(is_active=True).count()
+    total_courses = sum(student.courses_count for student in Student.objects.all())
     
     context = {
-        'total_students': total_students,
+        'students_count': students_count,
         'total_courses': total_courses,
+        'active_page': 'home'
     }
     return render(request, 'home.html', context)
 
 def about(request):
     """About page view"""
-    return render(request, 'about.html')
+    context = {
+        'active_page': 'about'
+    }
+    return render(request, 'about.html', context)
 
 def students_list(request):
-    """Students list page with search and sort functionality"""
+    """Students list page with search functionality"""
+    search_query = request.GET.get('search', '')
+    
     students = Student.objects.filter(is_active=True)
     
-    # Search functionality
-    search_query = request.GET.get('search', '')
     if search_query:
         students = students.filter(
-            first_name__icontains=search_query
-        ) | students.filter(
-            last_name__icontains=search_query
-        ) | students.filter(
-            email__icontains=search_query
+            Q(first_name__icontains=search_query) |
+            Q(last_name__icontains=search_query) |
+            Q(email__icontains=search_query) |
+            Q(courses_completed__icontains=search_query)
         )
-    
-    # Sort functionality
-    sort_by = request.GET.get('sort', '-join_date')
-    if sort_by in ['first_name', '-first_name', 'email', '-email', 'join_date', '-join_date']:
-        students = students.order_by(sort_by)
     
     context = {
         'students': students,
         'search_query': search_query,
-        'sort_by': sort_by,
+        'active_page': 'students'
     }
     return render(request, 'students.html', context)
 
@@ -50,13 +50,16 @@ def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            # Process the form (send email, save to database, etc.)
+            # In production, you would send email here
             messages.success(request, 'پیام شما با موفقیت ارسال شد. به زودی با شما تماس خواهیم گرفت.')
             return redirect('contact')
     else:
         form = ContactForm()
     
-    context = {'form': form}
+    context = {
+        'form': form,
+        'active_page': 'contact'
+    }
     return render(request, 'contact.html', context)
 
 def register(request):
@@ -65,12 +68,13 @@ def register(request):
         form = StudentRegistrationForm(request.POST)
         if form.is_valid():
             student = form.save()
-            messages.success(request, f'ثبت نام شما با موفقیت انجام شد! خوش آمدید {student.full_name} عزیز')
+            messages.success(request, f'ثبت نام با موفقیت انجام شد! خوش آمدید {student.full_name}')
             return redirect('students')
-        else:
-            messages.error(request, 'لطفاً خطاهای فرم را برطرف کنید.')
     else:
         form = StudentRegistrationForm()
     
-    context = {'form': form}
+    context = {
+        'form': form,
+        'active_page': 'register'
+    }
     return render(request, 'register.html', context)
