@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}دانشجویان - MelorinEdu{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <!-- Page Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-3 neon-text mb-3">دانشجویان ملورین‌اِدو</h1>
+        <p class="lead">لیست دانشجویان فعال پلتفرم</p>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3 mb-md-0">
+            <form method="get" class="search-form">
+                <div class="input-group">
+                    <input type="text" 
+                           name="search" 
+                           class="form-control" 
+                           placeholder="جستجو بر اساس نام، نام خانوادگی یا ایمیل..."
+                           value="{{ search_query }}">
+                    <button class="btn btn-neon" type="submit">
+                        <i class="fas fa-search"></i> جستجو
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form method="get">
+                {% if search_query %}
+                    <input type="hidden" name="search" value="{{ search_query }}">
+                {% endif %}
+                <select name="sort" class="form-select" onchange="this.form.submit()">
+                    <option value="-join_date" {% if sort_by == '-join_date' %}selected{% endif %}>جدیدترین</option>
+                    <option value="join_date" {% if sort_by == 'join_date' %}selected{% endif %}>قدیمی‌ترین</option>
+                    <option value="first_name" {% if sort_by == 'first_name' %}selected{% endif %}>نام (الف - ی)</option>
+                    <option value="-first_name" {% if sort_by == '-first_name' %}selected{% endif %}>نام (ی - الف)</option>
+                </select>
+            </form>
+        </div>
+    </div>
+
+    <!-- Students Count -->
+    <div class="mb-3">
+        <h5>تعداد دانشجویان: <span class="neon-text">{{ students.count }}</span></h5>
+    </div>
+
+    <!-- Desktop Table View -->
+    <div class="d-none d-lg-block">
+        <div class="table-responsive">
+            <table class="table table-dark table-hover students-table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-hashtag"></i> #</th>
+                        <th><i class="fas fa-user"></i> نام کامل</th>
+                        <th><i class="fas fa-envelope"></i> ایمیل</th>
+                        <th><i class="fas fa-book-open"></i> تعداد دوره‌ها</th>
+                        <th><i class="fas fa-list"></i> نام دوره‌ها</th>
+                        <th><i class="fas fa-calendar-alt"></i> تاریخ عضویت</th>
+                        <th><i class="fas fa-clock"></i> مدت عضویت (روز)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td class="neon-text fw-bold">{{ student.full_name }}</td>
+                        <td>{{ student.email }}</td>
+                        <td class="text-center">
+                            <span class="badge bg-neon">{{ student.courses_count }}</span>
+                        </td>
+                        <td>
+                            {% if student.courses_list %}
+                                <ul class="list-unstyled mb-0">
+                                    {% for course in student.courses_list|slice:":3" %}
+                                        <li><i class="fas fa-check-circle neon-text"></i> {{ course }}</li>
+                                    {% endfor %}
+                                    {% if student.courses_count > 3 %}
+                                        <li class="text-muted">... و {{ student.courses_count|add:"-3" }} دوره دیگر</li>
+                                    {% endif %}
+                                </ul>
+                            {% else %}
+                                <span class="text-muted">بدون دوره</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ student.join_date|date:"Y/m/d" }}</td>
+                        <td class="text-center">
+                            <span class="badge bg-success">{{ student.membership_duration }}</span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-5">
+                            <i class="fas fa-user-slash fa-3x mb-3 text-muted"></i>
+                            <p class="text-muted">دانشجویی یافت نشد.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Mobile Card View -->
+    <div class="d-lg-none">
+        {% for student in students %}
+        <div class="student-card mb-3">
+            <div class="student-card-header">
+                <h5 class="neon-text mb-0">
+                    <i class="fas fa-user-circle"></i> {{ student.full_name }}
+                </h5>
+            </div>
+            <div class="student-card-body">
+                <p class="mb-2">
+                    <strong><i class="fas fa-envelope"></i> ایمیل:</strong><br>
+                    {{ student.email }}
+                </p>
+                <p class="mb-2">
+                    <strong><i class="fas fa-book-open"></i> تعداد دوره‌ها:</strong>
+                    <span class="badge bg-neon">{{ student.courses_count }}</span>
+                </p>
+                {% if student.courses_list %}
+                <p class="mb-2">
+                    <strong><i class="fas fa-list"></i> دوره‌ها:</strong><br>
+                    {% for course in student.courses_list|slice:":2" %}
+                        <span class="badge bg-secondary me-1 mb-1">{{ course }}</span>
+                    {% endfor %}
+                    {% if student.courses_count > 2 %}
+                        <span class="badge bg-info">+{{ student.courses_count|add:"-2" }} دیگر</span>
+                    {% endif %}
+                </p>
+                {% endif %}
+                <p class="mb-2">
+                    <strong><i class="fas fa-calendar-alt"></i> تاریخ عضویت:</strong>
+                    {{ student.join_date|date:"Y/m/d" }}
+                </p>
+                <p class="mb-0">
+                    <strong><i class="fas fa-clock"></i> مدت عضویت:</strong>
+                    <span class="badge bg-success">{{ student.membership_duration }} روز</span>
+                </p>
+            </div>
+        </div>
+        {% empty %}
+        <div class="text-center py-5">
+            <i class="fas fa-user-slash fa-4x mb-3 text-muted"></i>
+            <p class="text-muted">دانشجویی یافت نشد.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Call to Action -->
+    {% if students %}
+    <div class="text-center mt-5">
+        <div class="cta-box">
+            <h4 class="neon-text mb-3">می‌خواهید به جمع ما بپیوندید؟</h4>
+            <a href="{% url 'register' %}" class="btn btn-neon btn-lg">
+                <i class="fas fa-user-plus"></i> ثبت نام کنید
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

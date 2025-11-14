@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ثبت نام - MelorinEdu{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <!-- Page Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-3 neon-text mb-3">ثبت نام در پلتفرم</h1>
+        <p class="lead">جهت شروع یادگیری فرم زیر را تکمیل کنید</p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="content-box">
+                <!-- Registration Form -->
+                <form method="post" class="registration-form" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="row g-4">
+                        <!-- First Name -->
+                        <div class="col-md-6">
+                            <label for="{{ form.first_name.id_for_label }}" class="form-label">
+                                <i class="fas fa-user"></i> {{ form.first_name.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.first_name.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="col-md-6">
+                            <label for="{{ form.last_name.id_for_label }}" class="form-label">
+                                <i class="fas fa-user"></i> {{ form.last_name.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.last_name.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-12">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">
+                                <i class="fas fa-envelope"></i> {{ form.email.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.email.errors }}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">ایمیل شما باید یکتا باشد</div>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="col-12">
+                            <label for="{{ form.phone.id_for_label }}" class="form-label">
+                                <i class="fas fa-phone"></i> {{ form.phone.label }}
+                            </label>
+                            {{ form.phone }}
+                            {% if form.phone.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.phone.errors }}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">اختیاری - برای اطلاع‌رسانی درباره دوره‌ها</div>
+                        </div>
+
+                        <!-- Courses Completed -->
+                        <div class="col-12">
+                            <label for="{{ form.courses_completed.id_for_label }}" class="form-label">
+                                <i class="fas fa-book"></i> {{ form.courses_completed.label }}
+                            </label>
+                            {{ form.courses_completed }}
+                            {% if form.courses_completed.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.courses_completed.errors }}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">نام دوره‌های گذرانده شده را با کاما جدا کنید</div>
+                        </div>
+
+                        <!-- Terms and Conditions -->
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="terms" required>
+                                <label class="form-check-label" for="terms">
+                                    قوانین و مقررات را مطالعه کرده و قبول دارم
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-neon btn-lg w-100">
+                                <i class="fas fa-user-plus"></i> ثبت نام در پلتفرم
+                            </button>
+                        </div>
+
+                        <!-- Login Link -->
+                        <div class="col-12 text-center">
+                            <p class="text-muted">
+                                قبلاً ثبت نام کرده‌اید؟ 
+                                <a href="{% url 'students' %}" class="neon-text">مشاهده دانشجویان</a>
+                            </p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Benefits Section -->
+            <div class="mt-5">
+                <h3 class="text-center neon-text mb-4">چرا ثبت نام کنیم؟</h3>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="benefit-card text-center">
+                            <i class="fas fa-infinity fa-2x neon-text mb-2"></i>
+                            <h6>دسترسی نامحدود</h6>
+                            <small>به تمام دوره‌ها</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="benefit-card text-center">
+                            <i class="fas fa-certificate fa-2x neon-text mb-2"></i>
+                            <h6>گواهینامه معتبر</h6>
+                            <small>پس از اتمام دوره</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="benefit-card text-center">
+                            <i class="fas fa-users fa-2x neon-text mb-2"></i>
+                            <h6>جامعه فعال</h6>
+                            <small>شبکه‌سازی حرفه‌ای</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Form validation
+document.querySelector('.registration-form').addEventListener('submit', function(e) {
+    const termsCheckbox = document.getElementById('terms');
+    if (!termsCheckbox.checked) {
+        e.preventDefault();
+        alert('لطفاً قوانین و مقررات را قبول کنید.');
+    }
+});
+</script>
+{% endblock %}
